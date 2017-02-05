@@ -14,14 +14,17 @@ use Symfony\Component\Security\Core\User\UserProviderInterface;
 use Symfony\Component\Security\Core\Exception\AuthenticationCredentialsNotFoundException;
 use Doctrine\ORM\EntityManager;
 use Symfony\Component\Security\Core\Exception\CustomUserMessageAuthenticationException;
+use Symfony\Component\DependencyInjection\ContainerInterface;
 
 class ApiKeyAuthenticator extends AbstractGuardAuthenticator
 {
     private $em;
+    private $container;
 
-    public function __construct(EntityManager $em)
+    public function __construct(EntityManager $em, ContainerInterface $container)
     {
         $this->em = $em;
+        $this->container = $container;
     }
 
     /**
@@ -42,6 +45,13 @@ class ApiKeyAuthenticator extends AbstractGuardAuthenticator
             $user = $this->em->getRepository('AppBundle:User')->getAuthUserForApiKey($token, $id);
 
             if (!$user) {
+              $logger = $this->container->get('monolog.logger.ERROR_LOG_CHANNEL');
+              $logger->error('getCredentials', [
+                'field1' => 'test1',
+                'field2' => 'test2',
+                'field3' => 'test3',
+              ]);
+
               throw new AuthenticationCredentialsNotFoundException();
             }
         }
@@ -65,6 +75,13 @@ class ApiKeyAuthenticator extends AbstractGuardAuthenticator
         $user = $this->em->getRepository('AppBundle:User')->findOneBy(array('apiKey' => $credentials));
 
         if (!$user) {
+            $logger = $this->container->get('monolog.logger.ERROR_LOG_CHANNEL');
+            $logger->error('getCredentials', [
+              'field1' => 'test1',
+              'field2' => 'test2',
+              'field3' => 'test3',
+            ]);
+
             throw new AuthenticationCredentialsNotFoundException();
         }
 
@@ -86,6 +103,13 @@ class ApiKeyAuthenticator extends AbstractGuardAuthenticator
 
     public function onAuthenticationSuccess(Request $request, TokenInterface $token, $providerKey)
     {
+        $logger = $this->container->get('monolog.logger.SUCCESS_LOG_CHANNEL');
+        $logger->info('onAuthenticationSuccess', [
+          'field1' => 'test1',
+          'field2' => 'test2',
+          'field3' => 'test3',
+        ]);
+
         return null;
     }
 
@@ -94,6 +118,13 @@ class ApiKeyAuthenticator extends AbstractGuardAuthenticator
         $data = array(
             'message' => strtr($exception->getMessageKey(), $exception->getMessageData())
         );
+
+        $logger = $this->container->get('monolog.logger.ERROR_LOG_CHANNEL');
+        $logger->error('onAuthenticationFailure', [
+          'field1' => 'test1',
+          'field2' => 'test2',
+          'field3' => 'test3',
+        ]);
 
         return new JsonResponse($data, Response::HTTP_FORBIDDEN);
     }

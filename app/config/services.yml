@@ -6,7 +6,7 @@ parameters:
 services:
     app.api_key_authenticator:
         class: AppBundle\Security\ApiKeyAuthenticator
-        arguments: ["@doctrine.orm.entity_manager"]
+        arguments: ["@doctrine.orm.entity_manager", "@service_container"]
 
     success_channel:
         class: AppBundle\Services\LoggerService
