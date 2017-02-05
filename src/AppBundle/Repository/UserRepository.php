@@ -23,6 +23,10 @@ class UserRepository extends \Doctrine\ORM\EntityRepository
             ->getOneOrNullResult();
     }
 
+    /**
+     * @param string $apiKey
+     * @return User
+     */
     public function getUserForApiKey($apiKey)
     {
        return $this->createQueryBuilder('u')
@@ -32,6 +36,11 @@ class UserRepository extends \Doctrine\ORM\EntityRepository
            ->getOneOrNullResult();
     }
 
+    /**
+     * @param string $apiKey
+     * @param AppBundle\Entity\User
+     * @return User
+     */
     public function getAuthUserForApiKey($apiKey, $user)
     {
        return $this->createQueryBuilder('u')
