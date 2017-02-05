@@ -1,7 +1,7 @@
 Demo API for Symfony 3
 ========================
 
-(Install Vagrant and Homestead)[https://symfony.com/doc/current/setup/homestead.html]
+[Install Vagrant and Homestead](https://symfony.com/doc/current/setup/homestead.html)
 
 ## Installation
 
@@ -23,6 +23,7 @@ Add the following line to your hosts and edit homestead.yml with your project di
   192.168.10.10 demo-api.app
 
 ```sh
+curl -H "X-AUTH-TOKEN: test123456" http://demo-api.app/logger
 curl -H "X-AUTH-TOKEN: test123456" http://demo-api.app/user/1
 curl -H "X-AUTH-TOKEN: test123456" http://demo-api.app/user/2
 ```
