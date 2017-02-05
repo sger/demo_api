@@ -31,7 +31,13 @@ class DefaultController extends Controller
 
         $logger = $this->container->get('monolog.logger.ERROR_LOG_CHANNEL');
 
-        $logger->info('I just got the logger !!!! update', array(
+        $logger->warning('warning', array(
+          'field1' => 'test1',
+          'field2' => 'test2',
+          'field3' => 'test3',
+        ));
+
+        $logger->error('error', array(
           'field1' => 'test1',
           'field2' => 'test2',
           'field3' => 'test3',
@@ -55,7 +61,7 @@ class DefaultController extends Controller
         }
 
         $logger = $this->container->get('monolog.logger.SUCCESS_LOG_CHANNEL');
-        
+
         $logger->info('getUserAction with id '.$id, [
           'field1' => 'test1',
           'field2' => 'test2',
